@@ -139,7 +139,7 @@ public class Main {
 
         // get account to transfer from
         do{
-            System.out.printf("Enter the number (1-&d) of the account\n" + "to transfer from: ");
+            System.out.printf("Enter the number (1-%d) of the account\n" + "to transfer from: ", theUser.numAccounts());
             fromAcct = input.nextInt()-1;
             if (fromAcct < 0 || fromAcct >= theUser.numAccounts()){
                 System.out.println("Invalid account. Please try again.");
@@ -149,7 +149,7 @@ public class Main {
 
         // get account to transfer to
         do{
-            System.out.printf("Enter the number (1-&d) of the account\n" + "to transfer from: ");
+            System.out.printf("Enter the number (1-%d) of the account\n" + "to transfer from: ", theUser.numAccounts());
             toAcct = input.nextInt()-1;
             if (toAcct < 0 || toAcct >= theUser.numAccounts()){
                 System.out.println("Invalid account. Please try again.");
@@ -158,7 +158,7 @@ public class Main {
 
         // get transfer amount
         do{
-            System.out.printf("Enter the amount to transfer (max $%.02f): $" + acctBal);
+            System.out.printf("Enter the amount to transfer (max $%.02f): $", acctBal);
             amount = input.nextDouble();
             if(amount < 0){
                 System.out.println("Amount must be greater than zero.");
@@ -186,7 +186,7 @@ public class Main {
 
         // get account to transfer from
         do{
-            System.out.printf("Enter the number (1-&d) of the account\n" + "to withdraw from: ");
+            System.out.printf("Enter the number (1-%d) of the account\n" + "to withdraw from: ", theUser.numAccounts());
             fromAcct = input.nextInt()-1;
             if (fromAcct < 0 || fromAcct >= theUser.numAccounts()){
                 System.out.println("Invalid account. Please try again.");
@@ -196,7 +196,7 @@ public class Main {
 
         // get transfer amount
         do{
-            System.out.printf("Enter the amount to transfer (max $%.02f): $" + acctBal);
+            System.out.printf("Enter the amount to transfer (max $%.02f): $", acctBal);
             amount = input.nextDouble();
             if(amount < 0){
                 System.out.println("Amount must be greater than zero.");
@@ -236,7 +236,7 @@ public class Main {
 
         // get transfer amount
         do{
-            System.out.printf("Enter the amount to transfer (max $%.02f): $" + acctBal);
+            System.out.printf("Enter the amount to transfer (max $%.02f): $" , acctBal);
             amount = input.nextDouble();
             if(amount < 0){
                 System.out.println("Amount must be greater than zero.");
