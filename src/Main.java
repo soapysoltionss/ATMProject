@@ -29,6 +29,12 @@ public class Main {
 
     }
 
+    /**
+     * Main Menu
+     * @param theBank bank object
+     * @param input scanner object for user input
+     * @return
+     */
     public static User mainMenuPrompt(Bank theBank, Scanner input) {
         //inits
         String userID;

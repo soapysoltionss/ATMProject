@@ -7,6 +7,7 @@ public class Bank {
     private ArrayList<User> users;
     private ArrayList<Account> accounts;
 
+
     /**
      * Bank object with empty list of users and accounts
      * @param name bank name
