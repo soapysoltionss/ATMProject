@@ -78,5 +78,6 @@ public class Account {
 
         // create new transaction object and add to list
         Transaction newTrans = new Transaction(amount, memo, this);
+        transactions.add(newTrans);
     }
 }

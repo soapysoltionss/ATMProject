@@ -236,7 +236,7 @@ public class Main {
 
         // get transfer amount
         do{
-            System.out.printf("Enter the amount to transfer (max $%.02f): $" , acctBal);
+            System.out.printf("Enter the amount to deposit: $" );
             amount = input.nextDouble();
             if(amount < 0){
                 System.out.println("Amount must be greater than zero.");
@@ -251,6 +251,6 @@ public class Main {
         memo = input.nextLine();
 
         //do the withdrawal
-        theUser.addAccountTransaction(toAcct, -1*amount, memo);
+        theUser.addAccountTransaction(toAcct, amount, memo);
     }
 }

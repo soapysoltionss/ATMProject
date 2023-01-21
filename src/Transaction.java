@@ -17,7 +17,6 @@ public class Transaction {
      * @param inAccount     the account transaction belongs to
      */
     public Transaction(double amount, Account inAccount){
-
         this.amount = amount;
         this.inAccount = inAccount;
         this.timestamp = new Date();
@@ -54,9 +53,9 @@ public class Transaction {
     public String getSummaryLine(){
 
         if(this.amount >= 0){
-            return String.format("%s : $%0.2f : %s", this.timestamp.toString(), this.amount, this.memo);
+            return String.format("%s : $%.2f : %s", this.timestamp.toString(), this.amount, this.memo);
         }else{
-            return String.format("%s : $%0.2f : %s", this.timestamp.toString(), -this.amount, this.memo);
+            return String.format("%s : $%.2f : %s", this.timestamp.toString(), -this.amount, this.memo);
         }
     }
 
