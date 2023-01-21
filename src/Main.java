@@ -155,7 +155,7 @@ public class Main {
 
         // get account to transfer to
         do{
-            System.out.printf("Enter the number (1-%d) of the account\n" + "to transfer from: ", theUser.numAccounts());
+            System.out.printf("Enter the number (1-%d) of the account\n" + "to transfer to: ", theUser.numAccounts());
             toAcct = input.nextInt()-1;
             if (toAcct < 0 || toAcct >= theUser.numAccounts()){
                 System.out.println("Invalid account. Please try again.");
@@ -174,7 +174,8 @@ public class Main {
         }while(amount < 0 || amount > acctBal);
 
         // do transfer
-        theUser.addAccountTransaction(fromAcct, -1*amount, String.format("Transfer to account %s", theUser.getAccountUUID(toAcct)));
+        theUser.addAccountTransaction(fromAcct, -1*amount, String.format("Transferred from account %s", theUser.getAccountUUID(fromAcct)));
+        theUser.addAccountTransaction(toAcct, amount, String.format("Transfer to account %s", theUser.getAccountUUID(toAcct)));
     }
 
     /**
@@ -200,9 +201,9 @@ public class Main {
         } while(fromAcct < 0 || fromAcct >= theUser.numAccounts());
         acctBal = theUser.getAccountBalance(fromAcct);
 
-        // get transfer amount
+        // get withdraw amount
         do{
-            System.out.printf("Enter the amount to transfer (max $%.02f): $", acctBal);
+            System.out.printf("Enter the amount to withdraw (max $%.02f): $", acctBal);
             amount = input.nextDouble();
             if(amount < 0){
                 System.out.println("Amount must be greater than zero.");
@@ -218,7 +219,7 @@ public class Main {
         System.out.print("Enter a memo: ");
         memo = input.nextLine();
 
-        //do the withdrawal
+        //do the transfer
         theUser.addAccountTransaction(fromAcct, -1*amount, memo);
     }
 
@@ -256,7 +257,7 @@ public class Main {
         System.out.println("Enter a memo: ");
         memo = input.nextLine();
 
-        //do the withdrawal
+        //do the deposit
         theUser.addAccountTransaction(toAcct, amount, memo);
     }
 }
