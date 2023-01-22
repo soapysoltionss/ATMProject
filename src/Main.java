@@ -219,7 +219,7 @@ public class Main {
         System.out.print("Enter a memo: ");
         memo = input.nextLine();
 
-        //do the transfer
+        //do the withdrawal
         theUser.addAccountTransaction(fromAcct, -1*amount, memo);
     }
 
