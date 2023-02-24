@@ -1,11 +1,9 @@
 package com.atm;
 
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-
 import org.bson.Document;
 
 import com.mongodb.client.MongoCollection;
@@ -17,14 +15,16 @@ public class User {
     private String pinHash;
     private ArrayList<Account> accounts;
     private Bank bank;
+    private String country;
     
-    public User(String firstName, String lastName, String pinHash, Bank bank) {
+    public User(String firstName, String lastName, String pinHash, Bank bank, String country) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pinHash = pinHash;
         this.accounts = new ArrayList<>();
         this.uuid = bank.getNewUserUUID();
         this.bank = bank;
+        this.country = country;
     }
 
     public static String hashPin(String pin) throws NoSuchAlgorithmException {
@@ -49,6 +49,10 @@ public class User {
     public String getPinHash() {
         return this.pinHash;
     }
+
+    public String getCountry() {
+        return this.country;
+    }
     
     public String getFirstName() {
         return this.firstName;
@@ -60,6 +64,10 @@ public class User {
 
     public void setAccounts(ArrayList<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    public void printTransactionHistory(int acctIndex) {
+        this.accounts.get(acctIndex).printTransactionHistory();
     }
 
 
@@ -108,7 +116,10 @@ public class User {
             e.printStackTrace();
             return false;
         }
+    }
 
+    public double getAccountBalance(int acctIndex) {
+        return this.accounts.get(acctIndex).getBalance();
     }
 
     public ArrayList<Account> getAllAccounts() {

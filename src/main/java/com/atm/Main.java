@@ -1,8 +1,11 @@
 package com.atm;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import org.apache.http.ParseException;
 
 public class Main {
     public static void main(String[] args) throws NoSuchAlgorithmException {
@@ -10,7 +13,7 @@ public class Main {
         Bank theBank = new Bank("Bank of Kek");
         System.out.println("Testing: Current users = " + theBank.countUsers());
         User curUser;
-        while(true) {
+        while (true) {
             curUser = Main.mainMenuPrompt(theBank, input);
             Main.printUserMenu(curUser, input);
         }
@@ -19,17 +22,18 @@ public class Main {
         // System.out.println(theBank.countUsers());
         // theBank.printInfo();
         // User currentUser = theBank.userLogin("8133389705", "6969");
-        //Account newAcc = currentUser.addAccount("savings", theBank);
+        // Account newAcc = currentUser.addAccount("savings", theBank);
 
         // Account currentAccount = currentUser.getAccount(0);
 
         // currentAccount.transfer(currentUser.getAccount(1), 15);
 
-        //currentAccount.deposit(100);
-        //User firstUser = theBank.addUser("Kek", "asdasd", "1111");
-       // Account savingsAccountForFirstUser = firstUser.addAccount("current", theBank);
-        //System.out.println(firstUser);
-        //System.out.println(savingsAccountForFirstUser);
+        // currentAccount.deposit(100);
+        //User firstUser = theBank.addUser("Kek", "asdasd", "1111", "Singapore");
+        // Account savingsAccountForFirstUser = firstUser.addAccount("current",
+        // theBank);
+        // System.out.println(firstUser);
+        // System.out.println(savingsAccountForFirstUser);
     }
 
     public static User mainMenuPrompt(Bank theBank, Scanner input) {
@@ -43,7 +47,7 @@ public class Main {
             userID = input.nextLine();
             System.out.print("Enter Pin: ");
             pin = input.nextLine();
-            
+
             authUser = theBank.userLogin(userID, pin);
             if (authUser == null) {
                 System.out.println("Incorrect user ID/Pin combination! Please try again. ");
@@ -55,13 +59,54 @@ public class Main {
     public static void showTransactionHistory(User theUser, Scanner input) {
         int theAccount;
         do {
-            System.out.printf("Enter the number(1-%d) of the account\n" + "whose transaction you want to see",theUser.numOfAccounts());
-            theAccount = input.nextInt()-1;
+            System.out.printf("Enter the number(1-%d) of the account\n" + "whose transaction you want to see: ",
+                    theUser.numOfAccounts());
+            theAccount = input.nextInt() - 1;
             if (theAccount < 0 || theAccount >= theUser.numOfAccounts()) {
                 System.out.println("Invalid account. Please try again.");
-            } 
+            }
         } while (theAccount < 0 || theAccount >= theUser.numOfAccounts());
         theUser.printTransactionHistory(theAccount);
+    }
+
+    public static void withdrawalFunds(User theUser, Scanner input) {
+        int fromAcct;
+        double amount;
+        double acctBal;
+        String memo;
+
+        do {
+            System.out.printf("Enter the number (1-%d) of the account\n" + "to withdraw from: ", theUser.numOfAccounts());
+            fromAcct = input.nextInt()-1;
+            if (fromAcct < 0 || fromAcct >= theUser.numOfAccounts()) {
+                System.out.println("Invalid account. Please try again.");
+            }
+        } while (fromAcct < 0 || fromAcct >= theUser.numOfAccounts());
+        acctBal = theUser.getAccountBalance(fromAcct);
+
+        do{
+            System.out.printf("Enter the amount to withdraw (max $%.02f): $", acctBal);
+            amount = input.nextDouble();
+            if(amount < 0){
+                System.out.println("Amount must be greater than zero.");
+            } else if (amount > acctBal) {
+                System.out.printf("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal);
+            }
+        }while(amount < 0 || amount > acctBal);
+
+        // takes rest of input
+        input.nextLine();
+        
+        theUser.getAccount(fromAcct).withdraw(amount);
+
+    }
+    
+    public static void transferFunds(User theUser, Scanner input) {
+        int fromAcct;
+        double amount;
+        double acctBal;
+        // not done 
+        
     }
 
     public static void printUserMenu(User theUser, Scanner input) {
@@ -86,10 +131,10 @@ public class Main {
                 Main.showTransactionHistory(theUser, input);
                 break;
             case 2:
-                //Main.withdrawalFunds(theUser, input);
+                Main.withdrawalFunds(theUser, input);
                 break;
             case 3:
-                //Main.depositFunds(theUser, input);
+                // Main.depositFunds(theUser, input);
                 break;
             case 4:
                 //Main.transferFunds(theUser, input);
@@ -103,4 +148,3 @@ public class Main {
         }
     }
 }
-

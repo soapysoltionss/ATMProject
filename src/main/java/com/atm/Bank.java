@@ -131,15 +131,16 @@ public class Bank {
     }
 
 
-    public User addUser(String firstName, String lastName, String pin) throws NoSuchAlgorithmException {
-        User newUser = new User(firstName, lastName, User.hashPin(pin), this);
+    public User addUser(String firstName, String lastName, String pin, String country) throws NoSuchAlgorithmException {
+        User newUser = new User(firstName, lastName, User.hashPin(pin), this, country);
         this.users.add(newUser);
 
         MongoCollection<Document> usersCollection = this.database.getCollection("users");
         Document userDocument = new Document("_id", newUser.getUUID())
         .append("firstName", newUser.getFirstName())
         .append("lastName", newUser.getLastName())
-        .append("pinHash", newUser.getPinHash().toString());
+        .append("pinHash", newUser.getPinHash().toString())
+        .append("country", newUser.getCountry());
         usersCollection.insertOne(userDocument);
         MongoCollection<Document> uuidsCollection = this.database.getCollection("uuids");
         Document newDoc = new Document().append("uuid", newUser.getUUID());
@@ -155,7 +156,8 @@ public class Bank {
             String firstName = doc.getString("firstName");
             String lastName = doc.getString("lastName");
             String pinHash = doc.getString("pinHash");
-            User user = new User(firstName, lastName, pinHash, this);
+            String country = doc.getString("country");
+            User user = new User(firstName, lastName, pinHash, this, country);
             //System.out.println(user.getFirstName());
             user.setUUID(UserUuid);
             ArrayList<Account> accounts = new ArrayList<Account>();
