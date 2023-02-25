@@ -1,6 +1,7 @@
 package com.atm;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -90,8 +91,10 @@ public class Main {
                 System.out.println("Amount must be greater than zero.");
             } else if (amount > acctBal) {
                 System.out.printf("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal);
+            } else if ((BigDecimal.valueOf(amount).scale() > 2)){
+                System.out.println("Amount must not have more than 2dp.");
             }
-        }while(amount < 0 || amount > acctBal);
+        }while(amount < 0 || amount > acctBal || (BigDecimal.valueOf(amount).scale() > 2));
 
         // takes rest of input
         input.nextLine();
@@ -114,8 +117,10 @@ public class Main {
             amount = input.nextDouble();
             if(amount < 0){
                 System.out.println("Amount must be greater than zero.");
+            } else if ((BigDecimal.valueOf(amount).scale() > 2)){
+                System.out.println("Amount must not have more than 2dp.");
             }
-        }while(amount < 0);
+        }while(amount < 0 || (BigDecimal.valueOf(amount).scale() > 2));
 
         // takes rest of input
         input.nextLine();
@@ -161,8 +166,10 @@ public class Main {
                     System.out.println("Amount must be greater than zero.");
                 } else if (amount > acctBal) {
                     System.out.printf("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal);
+                } else if ((BigDecimal.valueOf(amount).scale() > 2)){
+                    System.out.println("Amount must not have more than 2dp.");
                 }
-            }while(amount < 0 || amount > acctBal);
+            }while(amount < 0 || amount > acctBal || (BigDecimal.valueOf(amount).scale() > 2));
 
             // takes rest of input
             input.nextLine();
