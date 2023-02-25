@@ -133,22 +133,22 @@ public class Account {
 
     public boolean receive(double amount) {
         balance += amount;
-        this.modifyBalance(amount);
-        return true;
-    }
-
-    public boolean transfer(Account destination, double amount) {
-       if (balance < amount) {
-        return false;
-       } else {
-        balance -= amount;
         this.modifyBalance(balance);
-        addTransaction(this, new Transaction(amount, "Transfer to " + destination.getUUID(), this.getUUID()));
-
-        destination.receive(amount);
-        addTransaction(destination, new Transaction(amount, "Transfer from " + this.getUUID(), destination.getUUID()));
         return true;
     }
-    }
 
+    public boolean transfer(Account destination, String memo, double amount) {
+        if (balance < amount) {
+            return false;
+        } 
+        else {
+            balance -= amount;
+            this.modifyBalance(balance);
+            addTransaction(this, new Transaction(amount, "Transfer to " + destination.getUUID() + " - "+memo, this.getUUID()));
+            destination.receive(amount);
+            destination.addTransaction(destination, new Transaction(amount, "Transfer from " + this.getUUID() + " - "+memo, destination.getUUID()));
+            return true;
+        }
+    }
+    
 }
