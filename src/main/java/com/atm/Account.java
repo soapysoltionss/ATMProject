@@ -137,6 +137,63 @@ public class Account {
         return true;
     }
 
+    public double getOtherBal(String accountNumber) {
+        MongoCollection<Document> accountCollection = this.bank.database.getCollection("accounts");
+        Bson filter = Filters.eq("_id", accountNumber);
+        double oldInfo = 0;
+        for (Document doc: accountCollection.find(filter)) {
+            String docBal = doc.getString("_id").toString();
+            if (accountNumber.compareTo(docBal) == 0) {
+                oldInfo = doc.getDouble("balance");
+                return oldInfo;
+            }
+        }
+        return -1;
+    }
+
+    public boolean otherTransfer(String accountNumber, String memo, double amount)
+    {
+        if (balance < amount) {
+            return false;
+        } else {
+            balance -= amount;
+            this.modifyBalance(balance);
+            addTransaction(this, new Transaction(amount, "Transfer to OTHER " + accountNumber + " - "+memo, this.getUUID()));
+            try {
+                MongoCollection<Document> accountCollection = this.bank.database.getCollection("accounts");
+                Bson filter = Filters.eq("_id", accountNumber);
+                double oldInfo = getOtherBal(accountNumber);
+                boolean done = false;
+                if (oldInfo == -1) {
+                    return false;
+                } else {
+                    done = true;
+                }
+                if (done == false) {
+                    return false;
+                } else {
+                    Bson updateOperation = new Document("$set", new Document("balance", amount+oldInfo));
+                    accountCollection.updateOne(filter, updateOperation);
+                    try {
+                        MongoCollection<Document> transactionCollection = this.bank.database.getCollection("transactions");
+                    Transaction transaction = new Transaction(amount, "Transfer from OTHER " + accountNumber + " - "+memo, this.uuid);
+                    Document transactionDocument = new Document()
+                    .append("amount", transaction.getAmount())
+                    .append("memo", transaction.getMemo())
+                    .append("timestamp", transaction.getTimeStamp())
+                    .append("holder", accountNumber);
+                    transactionCollection.insertOne(transactionDocument);
+                    return true;
+                    } catch(Exception e) {
+                        return false;
+                    }
+                }
+            } catch (MongoException e) {
+                return false;
+            }            
+        }
+    }
+
     public boolean transfer(Account destination, String memo, double amount) {
         if (balance < amount) {
             return false;

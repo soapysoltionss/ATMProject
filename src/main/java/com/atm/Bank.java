@@ -101,6 +101,10 @@ public class Bank {
         return uuid;
     }
 
+    public void refreshUsers() {
+        this.users = this.getUsers();
+    }
+    
     public void addUser(User user) {
         users.add(user);
     }

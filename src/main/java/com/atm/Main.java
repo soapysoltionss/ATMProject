@@ -48,11 +48,12 @@ public class Main {
             userID = input.nextLine();
             System.out.print("Enter Pin: ");
             pin = input.nextLine();
-
+            theBank.refreshUsers();
             authUser = theBank.userLogin(userID, pin);
             if (authUser == null) {
                 System.out.println("Incorrect user ID/Pin combination! Please try again. ");
             }
+
         } while (authUser == null);
         return authUser;
     }
@@ -93,6 +94,8 @@ public class Main {
                 System.out.printf("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal);
             } else if ((BigDecimal.valueOf(amount).scale() > 2)){
                 System.out.println("Amount must not have more than 2dp.");
+            } else if (amount == 0) {
+                System.out.printf("Amount to withdraw can't be 0");
             }
         }while(amount < 0 || amount > acctBal || (BigDecimal.valueOf(amount).scale() > 2));
 
@@ -105,13 +108,12 @@ public class Main {
     
     public static void depositFunds(User theUser, Scanner input) {
         int fromAcct;
-        double amount;
         double acctBal;
         String memo;
 
         fromAcct = accSelect(theUser, input, "to deposit in: ");
         acctBal = theUser.getAccountBalance(fromAcct);
-
+        double amount;
         do{
             System.out.printf("Enter the amount to deposit: $");
             amount = input.nextDouble();
@@ -119,6 +121,8 @@ public class Main {
                 System.out.println("Amount must be greater than zero.");
             } else if ((BigDecimal.valueOf(amount).scale() > 2)){
                 System.out.println("Amount must not have more than 2dp.");
+            } else if (amount == 0) {
+                System.out.printf("Amount to deposit can't be 0");
             }
         }while(amount < 0 || (BigDecimal.valueOf(amount).scale() > 2));
 
@@ -132,14 +136,12 @@ public class Main {
 
     public static void transferFunds(User theUser, Scanner input) {
         int fromAcct;
-        int toAcct;
-        double amount;
         double acctBal;
         String memo;
-
+        int toAcct;
         fromAcct = accSelect(theUser, input, "to transfer from: ");
         acctBal = theUser.getAccountBalance(fromAcct);
-        
+        boolean correctAcc = false;
         do {
             theUser.printAccountSummary();
             System.out.printf("%d: Other Accounts",theUser.numOfAccounts()+1);
@@ -150,19 +152,50 @@ public class Main {
             }
             else if (toAcct==fromAcct){
                 System.out.println("Invalid selection, select a different account. Please try again.");
+            } else {
+                correctAcc = true;
             }
-        } while (toAcct < 0 || toAcct >= theUser.numOfAccounts()+1);
+        } while (toAcct < 0 || toAcct >= theUser.numOfAccounts()+1 || correctAcc == false);
 
         
         if (toAcct == theUser.numOfAccounts()){
-            //Other ppl's acc or overseas acc etc. 
-            System.out.println("UHM...");
+            input.nextLine();
+            System.out.printf("Enter the account number to transfer to: ");
+            String toAcctOthr = (String)input.nextLine();
+            double checkDestinationExist = theUser.getAccount(fromAcct).getOtherBal(toAcctOthr);
+            double amounts = 0;
+            if (checkDestinationExist == -1) {
+                System.out.println("Account does not exist!");
+                printUserMenu(theUser, input);
+            } else {
+                System.out.println("Account exists");
+                do {
+                    System.out.printf("Enter the amount to transfer: $");
+                    amounts = input.nextDouble();
+                    if(amounts <= 0){
+                        System.out.println("Amount must be greater than zero.");
+                    } else if (amounts > acctBal) {
+                        System.out.printf("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal);
+                    } else if ((BigDecimal.valueOf(amounts).scale() > 2)){
+                        System.out.println("Amount must not have more than 2dp.");
+                    } 
+                } while(amounts < 0 || amounts > acctBal || (BigDecimal.valueOf(amounts).scale() > 2));
+            }
+            // takes rest of input
+            input.nextLine();
+
+            // get a memo
+            System.out.print("Enter a memo: ");
+            memo = input.nextLine();
+            theUser.getAccount(fromAcct).otherTransfer(toAcctOthr, memo, amounts);
+            System.out.println("Transferred to OTHER " + toAcctOthr + " successfully!"); 
         }
         else{
+            double amount;
             do{
                 System.out.printf("Enter the amount to transfer: $");
                 amount = input.nextDouble();
-                if(amount < 0){
+                if(amount <= 0){
                     System.out.println("Amount must be greater than zero.");
                 } else if (amount > acctBal) {
                     System.out.printf("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal);
