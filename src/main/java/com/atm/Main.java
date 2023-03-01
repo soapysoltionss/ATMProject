@@ -144,7 +144,7 @@ public class Main {
         boolean correctAcc = false;
         do {
             theUser.printAccountSummary();
-            System.out.printf("%d: Other Accounts",theUser.numOfAccounts()+1);
+            System.out.printf("%d) Other Accounts",theUser.numOfAccounts()+1);
             System.out.printf("\nEnter the number (1-%d) of the account" + " to transfer to: ", theUser.numOfAccounts()+1);
             toAcct = input.nextInt()-1;
             if (toAcct < 0 || toAcct >= theUser.numOfAccounts()+1) {
@@ -168,7 +168,7 @@ public class Main {
                 System.out.println("Account does not exist!");
                 printUserMenu(theUser, input);
             } else {
-                System.out.println("Account exists");
+                //System.out.println("Account exists");
                 do {
                     System.out.printf("Enter the amount to transfer: $");
                     amounts = input.nextDouble();
