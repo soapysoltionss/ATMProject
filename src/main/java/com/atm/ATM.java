@@ -4,19 +4,25 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import org.apache.http.ParseException;
 
-public class Main {
-    public static void main(String[] args) throws NoSuchAlgorithmException {
+public class ATM {
+    public void displayATMMenu() throws NoSuchAlgorithmException {
         Scanner input = new Scanner(System.in);
         Bank theBank = new Bank("Bank of Kek");
         System.out.println("Testing: Current users = " + theBank.countUsers());
         User curUser;
-        while (true) {
-            curUser = Main.mainMenuPrompt(theBank, input);
-            Main.printUserMenu(curUser, input);
+        try {
+            while (true) {
+                curUser = ATM.mainMenuPrompt(theBank, input);
+                ATM.printUserMenu(curUser, input);
+            }
+        } catch (NoSuchElementException e) {
+            System.out.println("Exiting...");
+            System.exit(0);
         }
 
         // Bank theBank = new Bank("Bank of Kek");
@@ -103,7 +109,6 @@ public class Main {
         input.nextLine();
         
         theUser.getAccount(fromAcct).withdraw(amount);
-
     }
     
     public static void depositFunds(User theUser, Scanner input) {
@@ -130,7 +135,6 @@ public class Main {
         input.nextLine();
         
         theUser.getAccount(fromAcct).deposit(amount);
-
     }
 
 
@@ -214,7 +218,6 @@ public class Main {
         }
     }
 
-
     public static void printUserMenu(User theUser, Scanner input) {
         theUser.printAccountSummary();
         int choice;
@@ -234,23 +237,23 @@ public class Main {
         } while (choice < 1 || choice > 5);
         switch (choice) {
             case 1:
-                Main.showTransactionHistory(theUser, input);
+                ATM.showTransactionHistory(theUser, input);
                 break;
             case 2:
-                Main.withdrawalFunds(theUser, input);
+                ATM.withdrawalFunds(theUser, input);
                 break;
             case 3:
-                Main.depositFunds(theUser, input);
+                ATM.depositFunds(theUser, input);
                 break;
             case 4:
-                Main.transferFunds(theUser, input);
+                ATM.transferFunds(theUser, input);
                 break;
             case 5:
                 input.nextLine();
         }
 
         if (choice != 5) {
-            Main.printUserMenu(theUser, input);
+            ATM.printUserMenu(theUser, input);
         }
     }
 }
