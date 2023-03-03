@@ -1,8 +1,10 @@
 import java.util.Scanner;
 
-public class ATM {
+public class Main {
+    public static void main(String[] args) {
+        SocketClient sClient = new SocketClient("localhost", 5000);
+        sClient = new SocketClient("localhost", 5000);
 
-    public static void displayATMMenu() {
         // init Scanner
         Scanner input = new Scanner(System.in);
 
@@ -19,12 +21,16 @@ public class ATM {
 
         User curUser;
         while (true) {
+            // connect to socket and get input and output streams
+
+            
             //stay in login prompt until successful login
-            curUser = ATM.mainMenuPrompt(theBank, input);
+            curUser = Main.mainMenuPrompt(theBank, input);
 
             // stay in main menu until user quits
-            ATM.printUserMenu(curUser, input);
+            Main.printUserMenu(curUser, input);
         }
+
     }
 
     /**
@@ -85,16 +91,16 @@ public class ATM {
         // process the choice
         switch (choice) {
             case 1:
-                ATM.showTransHistory(theUser, input);
+                Main.showTransHistory(theUser, input);
                 break;
             case 2:
-                ATM.withdrawalFunds(theUser, input);
+                Main.withdrawalFunds(theUser, input);
                 break;
             case 3:
-                ATM.depositFunds(theUser, input);
+                Main.depositFunds(theUser, input);
                 break;
             case 4:
-                ATM.transferFunds(theUser, input);
+                Main.transferFunds(theUser, input);
                 break;
             case 5:
                 // takes rest of input
@@ -103,7 +109,7 @@ public class ATM {
 
         // redisplay this menu unless the user quits
         if (choice != 5) {
-            ATM.printUserMenu(theUser, input);
+            Main.printUserMenu(theUser, input);
         }
     }
 

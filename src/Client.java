@@ -18,8 +18,6 @@ public class Client {
             bufferedWriter = new BufferedWriter(outputStreamWriter);  
 
             System.out.println("Connection Established");
-            ATM atm = new ATM();
-            atm.displayATMMenu();
             System.out.println("Enter a number: ");
             Scanner scanner = new Scanner(System.in);  
             while (true){  
