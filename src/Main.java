@@ -2,6 +2,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        SocketClient sClient = new SocketClient("localhost", 5000);
+        sClient = new SocketClient("localhost", 5000);
 
         // init Scanner
         Scanner input = new Scanner(System.in);
@@ -19,7 +21,9 @@ public class Main {
 
         User curUser;
         while (true) {
+            // connect to socket and get input and output streams
 
+            
             //stay in login prompt until successful login
             curUser = Main.mainMenuPrompt(theBank, input);
 
