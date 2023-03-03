@@ -25,7 +25,7 @@ public class Server {
                 while (true){  
                     String msgFromClient = bufferedReader.readLine();  
                     System.out.println("Client: " + msgFromClient);   
-                    bufferedWriter.write("Message Received"); 
+                    bufferedWriter.write("Enter a number: "); 
                     bufferedWriter.newLine();  
                     bufferedWriter.flush(); 
 
