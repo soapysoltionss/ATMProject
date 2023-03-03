@@ -18,7 +18,8 @@ public class Client {
             bufferedWriter = new BufferedWriter(outputStreamWriter);  
 
             System.out.println("Connection Established");
-            System.out.println("Enter a number: ");
+            ATM atm = new ATM();
+            atm.displayATMMenu();
             Scanner scanner = new Scanner(System.in);  
             while (true){  
                 String msgToSend = scanner.nextLine();  
