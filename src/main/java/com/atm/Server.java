@@ -13,7 +13,7 @@ public class Server {
         BufferedWriter bufferedWriter ;  
         ServerSocket serversocket ;  
     
-        serversocket = new ServerSocket(5000);  
+        serversocket = new ServerSocket(5050);  
     
         while (true) {  
             try {  

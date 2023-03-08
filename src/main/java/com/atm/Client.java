@@ -14,7 +14,7 @@ public class Client {
         BufferedWriter bufferedWriter = null;  
         
         try {  
-            socket = new Socket("localhost", 5000);  
+            socket = new Socket("localhost", 5050);  
             inputStreamReader = new InputStreamReader(socket.getInputStream());  
             outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());  
             bufferedReader = new BufferedReader(inputStreamReader);  
@@ -40,20 +40,20 @@ public class Client {
         } catch (IOException e) {  
             e.printStackTrace();  
         } finally {  
-             try {  
-                  if (socket != null)  
-                  socket.close();  
-                  if (inputStreamReader != null)  
-                    inputStreamReader.close();  
-                  if (outputStreamWriter != null)  
-                  outputStreamWriter.close();  
-                  if (bufferedReader != null)  
-                  bufferedReader.close();  
-                  if (bufferedWriter != null)  
-                  bufferedWriter.close();  
-             } catch (IOException e) {  
-            e.printStackTrace();  
-          }  
-       }  
-    } 
+            try {  
+                if (socket != null)  
+                socket.close();  
+                if (inputStreamReader != null)  
+                inputStreamReader.close();  
+                if (outputStreamWriter != null)  
+                outputStreamWriter.close();  
+                if (bufferedReader != null)  
+                bufferedReader.close();  
+                if (bufferedWriter != null)  
+                bufferedWriter.close();  
+            } catch (IOException e) {  
+        e.printStackTrace();  
+        }  
+    }  
+} 
 }
