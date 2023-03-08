@@ -92,7 +92,7 @@ public class testCases {
 
     @Test
     public void testTransaction(){
-        equals(transaction.getHolder().equals("5044891741");
+        equals(transaction.getHolder().equals("5044891741"));
         equals(transaction.getAmount() == 100);
         equals(transaction.getMemo().equals("Hi"));
     }
