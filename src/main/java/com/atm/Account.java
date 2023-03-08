@@ -28,13 +28,16 @@ public class Account {
         this.transactions = new ArrayList<>();
     }
 
-    public String getSummaryLine() {
+    public String getSummaryLine() throws Exception {
         double balance = this.getBalance();
-        if (balance >= 0) {
-            return String.format("%s : $%.02f : %s", this.uuid, balance, this.name);
-        } else {
-            return String.format("%s : $%.02f : %s", this.uuid, balance, this.name);
+        try {
+            if (balance >= 0) {
+                return String.format("%s : $%.02f : %s", this.uuid, balance, this.name);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
         }
+        return String.format("%s : $%.02f : %s", this.uuid, balance, this.name);
     }
 
     public Account(String name, String holder, String uuid, ArrayList<Transaction> transactions, Bank bank, double balance) {
@@ -71,6 +74,13 @@ public class Account {
     }
 
     public void deposit(double amount) {
+        try {
+            if (amount <= 0) {
+                throw new Exception("Amount must be greater than 0");
+            }
+        } catch (Exception e) {
+            System.out.println("Error: Amount is negative" + e);
+        }
         balance += amount;
         this.modifyBalance(balance);
         addTransaction(this, new Transaction(amount, "Deposit", this.getUUID()));
@@ -81,13 +91,13 @@ public class Account {
         this.transactions.add(transaction);
         try {
             MongoCollection<Document> transactionCollection = this.bank.database.getCollection("transactions");
-        Document transactionDocument = new Document()
-        .append("amount", transaction.getAmount())
-        .append("memo", transaction.getMemo())
-        .append("timestamp", transaction.getTimeStamp())
-        .append("holder", account.getUUID());
-        transactionCollection.insertOne(transactionDocument);
-        return true;
+            Document transactionDocument = new Document()
+            .append("amount", transaction.getAmount())
+            .append("memo", transaction.getMemo())
+            .append("timestamp", transaction.getTimeStamp())
+            .append("holder", account.getUUID());
+            transactionCollection.insertOne(transactionDocument);
+            return true;
         } catch(Exception e) {
             return false;
         }
@@ -97,7 +107,12 @@ public class Account {
     public void printTransactionHistory() {
         System.out.printf("\nTransaction History for Account %s\n", this.uuid);
             for (int t = this.transactions.size()-1; t>0;t--) {
-                System.out.println(this.transactions.get(t).getSummaryLine());
+                try {
+                    System.out.println(this.transactions.get(t).getSummaryLine());
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
             System.out.println();
     
@@ -115,16 +130,21 @@ public class Account {
         }
     }
 
-    public boolean withdraw(double amount) {
-        if (balance < amount) {
-            return false;
-        } else {
-            balance -= amount;
-            this.modifyBalance(balance);
-            addTransaction(this, new Transaction(amount, "Withdrawal", this.getUUID()));
-            //this.transactions.add(new Transaction(amount, "Withdrawal", this.getUUID()));
-            return true;
+    public boolean withdraw(double amount) throws Exception{
+        try {
+            if (balance < amount) {
+                throw new Exception("Amount must be less than or equal to balance");
+            } else if (amount <= 0) {
+                throw new Exception("Amount must be greater than 0");
+            }
+        } catch (Exception e) {
+            System.out.println("Error: Amount is negative" + e);
         }
+        balance -= amount;
+        this.modifyBalance(balance);
+        addTransaction(this, new Transaction(amount, "Withdrawal", this.getUUID()));
+        //this.transactions.add(new Transaction(amount, "Withdrawal", this.getUUID()));
+        return true;
     }
 
     public ArrayList<Transaction> getTransactions() {
@@ -132,6 +152,13 @@ public class Account {
     }
 
     public boolean receive(double amount) {
+        try {
+            if (amount <= 0) {
+                throw new Exception("Amount must be greater than 0");
+            }
+        } catch (Exception e) {
+            System.out.println("Error: Amount is negative" + e);
+        }
         balance += amount;
         this.modifyBalance(balance);
         return true;
@@ -176,14 +203,14 @@ public class Account {
                     accountCollection.updateOne(filter, updateOperation);
                     try {
                         MongoCollection<Document> transactionCollection = this.bank.database.getCollection("transactions");
-                    Transaction transaction = new Transaction(amount, "Transfer from OTHER " + accountNumber + " - "+memo, this.uuid);
-                    Document transactionDocument = new Document()
-                    .append("amount", transaction.getAmount())
-                    .append("memo", transaction.getMemo())
-                    .append("timestamp", transaction.getTimeStamp())
-                    .append("holder", accountNumber);
-                    transactionCollection.insertOne(transactionDocument);
-                    return true;
+                        Transaction transaction = new Transaction(amount, "Transfer from OTHER " + accountNumber + " - "+memo, this.uuid);
+                        Document transactionDocument = new Document()
+                        .append("amount", transaction.getAmount())
+                        .append("memo", transaction.getMemo())
+                        .append("timestamp", transaction.getTimeStamp())
+                        .append("holder", accountNumber);
+                        transactionCollection.insertOne(transactionDocument);
+                        return true;
                     } catch(Exception e) {
                         return false;
                     }
@@ -195,17 +222,21 @@ public class Account {
     }
 
     public boolean transfer(Account destination, String memo, double amount) {
-        if (balance < amount) {
-            return false;
-        } 
-        else {
-            balance -= amount;
-            this.modifyBalance(balance);
-            addTransaction(this, new Transaction(amount, "Transfer to " + destination.getUUID() + " - "+memo, this.getUUID()));
-            destination.receive(amount);
-            destination.addTransaction(destination, new Transaction(amount, "Transfer from " + this.getUUID() + " - "+memo, destination.getUUID()));
-            return true;
+        try {
+            if (balance < amount) {
+                throw new Exception("Amount must be greater than 0");
+            } else if (amount <= 0) {
+                throw new Exception("Amount must be greater than 0");
+            }
+        } catch (Exception e) {
+            System.out.println("Error: Amount is negative" + e);
         }
+        balance -= amount;
+        this.modifyBalance(balance);
+        addTransaction(this, new Transaction(amount, "Transfer to " + destination.getUUID() + " - "+memo, this.getUUID()));
+        destination.receive(amount);
+        destination.addTransaction(destination, new Transaction(amount, "Transfer from " + this.getUUID() + " - "+memo, destination.getUUID()));
+        return true;
     }
     
 }

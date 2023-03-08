@@ -95,7 +95,7 @@ public class User {
         return this.accounts.get(index);
     }
 
-    public void printAccountSummary() {
+    public void printAccountSummary() throws Exception {
         System.out.printf("\n\n%s 's Accounts Summary", this.firstName);
         for (int a = 0;a<this.accounts.size();a++) {
             System.out.printf("\n%d) %s", a+1, this.getAccount(a).getSummaryLine());

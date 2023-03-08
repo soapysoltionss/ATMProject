@@ -67,7 +67,12 @@ public class ATM {
     public static int accSelect(User theUser, Scanner input, String msg){
         int acc;
         do {
-            theUser.printAccountSummary();
+            try {
+                theUser.printAccountSummary();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             System.out.printf("Enter the number(1-%d) of the account " + msg, theUser.numOfAccounts());
             acc = input.nextInt() - 1;
             if (acc < 0 || acc >= theUser.numOfAccounts()) {
@@ -108,7 +113,12 @@ public class ATM {
         // takes rest of input
         input.nextLine();
         
-        theUser.getAccount(fromAcct).withdraw(amount);
+        try {
+            theUser.getAccount(fromAcct).withdraw(amount);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
     public static void depositFunds(User theUser, Scanner input) {
@@ -147,7 +157,12 @@ public class ATM {
         acctBal = theUser.getAccountBalance(fromAcct);
         boolean correctAcc = false;
         do {
-            theUser.printAccountSummary();
+            try {
+                theUser.printAccountSummary();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             System.out.printf("%d) Other Accounts",theUser.numOfAccounts()+1);
             System.out.printf("\nEnter the number (1-%d) of the account" + " to transfer to: ", theUser.numOfAccounts()+1);
             toAcct = input.nextInt()-1;
@@ -219,7 +234,12 @@ public class ATM {
     }
 
     public static void printUserMenu(User theUser, Scanner input) {
-        theUser.printAccountSummary();
+        try {
+            theUser.printAccountSummary();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         int choice;
         do {
             System.out.printf("Welcome %s, what would you like to do? \n", theUser.getFirstName());

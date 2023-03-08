@@ -117,8 +117,6 @@ public class Bank {
         return this.name;
     }
 
-
-
     public void printInfo() {
         for (User user : users) {
             System.out.println(user.getFirstName());
@@ -138,7 +136,7 @@ public class Bank {
     public User addUser(String firstName, String lastName, String pin, String country) throws NoSuchAlgorithmException {
         User newUser = new User(firstName, lastName, User.hashPin(pin), this, country);
         this.users.add(newUser);
-
+    
         MongoCollection<Document> usersCollection = this.database.getCollection("users");
         Document userDocument = new Document("_id", newUser.getUUID())
         .append("firstName", newUser.getFirstName())
