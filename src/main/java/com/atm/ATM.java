@@ -205,13 +205,20 @@ public class ATM {
                 do {
                     System.out.printf("Enter the amount to transfer: $");
                     amounts = input.nextDouble();
-                    if(amounts <= 0){
-                        System.out.println("Amount must be greater than zero.");
-                    } else if (amounts > acctBal) {
-                        System.out.printf("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal);
-                    } else if ((BigDecimal.valueOf(amounts).scale() > 2)){
-                        System.out.println("Amount must not have more than 2dp.");
-                    } 
+                    try {
+                        if (amounts < 0 || (BigDecimal.valueOf(amounts).scale() > 2)) {
+                            throw new InvalidTransferFundsException(amounts, acctBal);
+                        }
+                    } catch (InvalidTransferFundsException e) {
+                        e.errorMessage();
+                    }
+                    // if(amounts <= 0){
+                    //     System.out.println("Amount must be greater than zero.");
+                    // } else if (amounts > acctBal) {
+                    //     System.out.printf("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal);
+                    // } else if ((BigDecimal.valueOf(amounts).scale() > 2)){
+                    //     System.out.println("Amount must not have more than 2dp.");
+                    // } 
                 } while(amounts < 0 || amounts > acctBal || (BigDecimal.valueOf(amounts).scale() > 2));
             }
             // takes rest of input
@@ -228,13 +235,20 @@ public class ATM {
             do{
                 System.out.printf("Enter the amount to transfer: $");
                 amount = input.nextDouble();
-                if(amount <= 0){
-                    System.out.println("Amount must be greater than zero.");
-                } else if (amount > acctBal) {
-                    System.out.printf("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal);
-                } else if ((BigDecimal.valueOf(amount).scale() > 2)){
-                    System.out.println("Amount must not have more than 2dp.");
+                try {
+                    if (amount < 0 || amount > acctBal || (BigDecimal.valueOf(amount).scale() > 2)) {
+                        throw new InvalidTransferFundsException(amount, acctBal);
+                    }
+                } catch (InvalidTransferFundsException e) {
+                    e.errorMessage();
                 }
+                // if(amount <= 0){
+                //     System.out.println("Amount must be greater than zero.");
+                // } else if (amount > acctBal) {
+                //     System.out.printf("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal);
+                // } else if ((BigDecimal.valueOf(amount).scale() > 2)){
+                //     System.out.println("Amount must not have more than 2dp.");
+                // }
             }while(amount < 0 || amount > acctBal || (BigDecimal.valueOf(amount).scale() > 2));
 
             // takes rest of input
