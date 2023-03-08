@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;  
   
 public class Client {  
-    public static void main(String[] args) throws NoSuchAlgorithmException {  
+    public static void main(String[] args) throws Exception {  
         Socket socket = null;  
         InputStreamReader inputStreamReader = null;  
         OutputStreamWriter outputStreamWriter = null;  

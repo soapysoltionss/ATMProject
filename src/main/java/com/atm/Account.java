@@ -30,14 +30,11 @@ public class Account {
 
     public String getSummaryLine() throws Exception {
         double balance = this.getBalance();
-        try {
-            if (balance >= 0) {
-                return String.format("%s : $%.02f : %s", this.uuid, balance, this.name);
-            }
-        } catch (Exception e) {
-            System.out.println("Error: " + e);
+        if (balance >= 0) {
+            return String.format("%s : $%.02f : %s", this.uuid, balance, this.name);
+        } else {
+            return String.format("%s : $%.02f : %s", this.uuid, balance, this.name);
         }
-        return String.format("%s : $%.02f : %s", this.uuid, balance, this.name);
     }
 
     public Account(String name, String holder, String uuid, ArrayList<Transaction> transactions, Bank bank, double balance) {

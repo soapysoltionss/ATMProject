@@ -10,7 +10,7 @@ import java.util.Scanner;
 import org.apache.http.ParseException;
 
 public class ATM {
-    public void displayATMMenu() throws NoSuchAlgorithmException {
+    public void displayATMMenu() throws Exception {
         Scanner input = new Scanner(System.in);
         Bank theBank = new Bank("Bank of Kek");
         System.out.println("Testing: Current users = " + theBank.countUsers());
@@ -121,7 +121,7 @@ public class ATM {
         }
     }
     
-    public static void depositFunds(User theUser, Scanner input) {
+    public static void depositFunds(User theUser, Scanner input) throws Exception{
         int fromAcct;
         double acctBal;
         String memo;
@@ -132,14 +132,21 @@ public class ATM {
         do{
             System.out.printf("Enter the amount to deposit: $");
             amount = input.nextDouble();
-            if(amount < 0){
-                System.out.println("Amount must be greater than zero.");
-            } else if ((BigDecimal.valueOf(amount).scale() > 2)){
-                System.out.println("Amount must not have more than 2dp.");
-            } else if (amount == 0) {
-                System.out.printf("Amount to deposit can't be 0");
+            try {
+                if (amount < 0 || (BigDecimal.valueOf(amount).scale() > 2)) {
+                    throw new InvalidAmountException(amount);
+                }
+            } catch (InvalidAmountException e) {
+                e.errorMessage();
             }
-        }while(amount < 0 || (BigDecimal.valueOf(amount).scale() > 2));
+            // if(amount < 0){
+            //     System.out.println("Amount must be greater than zero.");
+            // } else if ((BigDecimal.valueOf(amount).scale() > 2)){
+            //     System.out.println("Amount must not have more than 2dp.");
+            // } else if (amount == 0) {
+            //     System.out.printf("Amount to deposit can't be 0");
+            // }
+        } while(amount < 0 || (BigDecimal.valueOf(amount).scale() > 2));
 
         // takes rest of input
         input.nextLine();
@@ -148,7 +155,7 @@ public class ATM {
     }
 
 
-    public static void transferFunds(User theUser, Scanner input) {
+    public static void transferFunds(User theUser, Scanner input) throws Exception {
         int fromAcct;
         double acctBal;
         String memo;
@@ -185,7 +192,7 @@ public class ATM {
             double amounts = 0;
             if (checkDestinationExist == -1) {
                 System.out.println("Account does not exist!");
-                printUserMenu(theUser, input);
+                ATM.printUserMenu(theUser, input);
             } else {
                 //System.out.println("Account exists");
                 do {
@@ -233,7 +240,7 @@ public class ATM {
         }
     }
 
-    public static void printUserMenu(User theUser, Scanner input) {
+    public static void printUserMenu(User theUser, Scanner input) throws Exception {
         try {
             theUser.printAccountSummary();
         } catch (Exception e) {
