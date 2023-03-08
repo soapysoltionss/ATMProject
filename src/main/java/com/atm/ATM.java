@@ -87,7 +87,7 @@ public class ATM {
         theUser.printTransactionHistory(theAccount);
     }
 
-    public static void withdrawalFunds(User theUser, Scanner input) {
+    public static void withdrawalFunds(User theUser, Scanner input) throws Exception {
         int fromAcct;
         double amount;
         double acctBal;
@@ -99,15 +99,22 @@ public class ATM {
         do{
             System.out.printf("Enter the amount to withdraw (max $%.02f): $", acctBal);
             amount = input.nextDouble();
-            if(amount < 0){
-                System.out.println("Amount must be greater than zero.");
-            } else if (amount > acctBal) {
-                System.out.printf("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal);
-            } else if ((BigDecimal.valueOf(amount).scale() > 2)){
-                System.out.println("Amount must not have more than 2dp.");
-            } else if (amount == 0) {
-                System.out.printf("Amount to withdraw can't be 0");
+            try {
+                if (amount < 0 || amount > acctBal || (BigDecimal.valueOf(amount).scale() > 2)) {
+                    throw new InvalidWithdrawAmountException(amount, acctBal);
+                }
+            } catch (InvalidWithdrawAmountException e) {
+                e.errorMessage();
             }
+            // if(amount < 0){
+            //     System.out.println("Amount must be greater than zero.");
+            // } else if (amount > acctBal) {
+            //     System.out.printf("Amount must not be greater than\n" + "balance of $%.02f.\n", acctBal);
+            // } else if ((BigDecimal.valueOf(amount).scale() > 2)){
+            //     System.out.println("Amount must not have more than 2dp.");
+            // } else if (amount == 0) {
+            //     System.out.printf("Amount to withdraw can't be 0");
+            // }
         }while(amount < 0 || amount > acctBal || (BigDecimal.valueOf(amount).scale() > 2));
 
         // takes rest of input
