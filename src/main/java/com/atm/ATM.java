@@ -284,15 +284,15 @@ public class ATM {
             System.out.println("    2) Withdrawal");
             System.out.println("    3) Deposit");
             System.out.println("    4) Transfer");
-            System.out.println("    5) Settings");
-            System.out.println("    6) Quit");
+            // System.out.println("    5) Settings");
+            System.out.println("    5) Quit");
             System.out.println();
             System.out.print("Enter choice: ");
             choice = input.nextInt();
-            if (choice < 1 || choice > 6) {
+            if (choice < 1 || choice > 5) {
                 System.out.println("Invalid choice! Please choice 1-5");
             }
-        } while (choice < 1 || choice > 6);
+        } while (choice < 1 || choice > 5);
         switch (choice) {
             case 1:
                 ATM.showTransactionHistory(theUser, input);
@@ -307,12 +307,8 @@ public class ATM {
                 ATM.transferFunds(theUser, input);
                 break;
             case 5:
-                ATM.settings(theUser, input);
-                break;
-            case 6:
                 input.nextLine();
         }
-
         if (choice != 5) {
             ATM.printUserMenu(theUser, input);
         }
