@@ -87,7 +87,7 @@ public class ATM {
         theUser.printTransactionHistory(theAccount);
     }
 
-    public static void withdrawalFunds(User theUser, Scanner input) throws Exception {
+    public static void withdrawFunds(User theUser, Scanner input) throws Exception {
         int fromAcct;
         double amount;
         double acctBal;
@@ -119,7 +119,11 @@ public class ATM {
 
         // takes rest of input
         input.nextLine();
-        
+
+        withdrawFundsHelper(theUser, fromAcct, amount);
+    }
+
+    public static void withdrawFundsHelper(User theUser, int fromAcct, double amount) {
         try {
             theUser.getAccount(fromAcct).withdraw(amount);
         } catch (Exception e) {
@@ -261,6 +265,11 @@ public class ATM {
         }
     }
 
+    public static void settings(User theUser, Scanner input) {
+        System.out.println("Settings");
+        System.out.println("    1) Change Transfer Limit");
+    }
+
     public static void printUserMenu(User theUser, Scanner input) throws Exception {
         try {
             theUser.printAccountSummary();
@@ -275,20 +284,21 @@ public class ATM {
             System.out.println("    2) Withdrawal");
             System.out.println("    3) Deposit");
             System.out.println("    4) Transfer");
-            System.out.println("    5) Quit");
+            System.out.println("    5) Settings");
+            System.out.println("    6) Quit");
             System.out.println();
             System.out.print("Enter choice: ");
             choice = input.nextInt();
-            if (choice < 1 || choice > 5) {
+            if (choice < 1 || choice > 6) {
                 System.out.println("Invalid choice! Please choice 1-5");
             }
-        } while (choice < 1 || choice > 5);
+        } while (choice < 1 || choice > 6);
         switch (choice) {
             case 1:
                 ATM.showTransactionHistory(theUser, input);
                 break;
             case 2:
-                ATM.withdrawalFunds(theUser, input);
+                ATM.withdrawFunds(theUser, input);
                 break;
             case 3:
                 ATM.depositFunds(theUser, input);
@@ -297,6 +307,9 @@ public class ATM {
                 ATM.transferFunds(theUser, input);
                 break;
             case 5:
+                ATM.settings(theUser, input);
+                break;
+            case 6:
                 input.nextLine();
         }
 
@@ -304,4 +317,5 @@ public class ATM {
             ATM.printUserMenu(theUser, input);
         }
     }
+
 }
