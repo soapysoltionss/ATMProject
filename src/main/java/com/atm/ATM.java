@@ -199,8 +199,6 @@ public class ATM {
                 correctAcc = true;
             }
         } while (toAcct < 0 || toAcct >= theUser.numOfAccounts()+1 || correctAcc == false);
-
-        
         if (toAcct == theUser.numOfAccounts()){
             input.nextLine();
             System.out.printf("Enter the account number to transfer to: ");
@@ -233,11 +231,11 @@ public class ATM {
             }
             // takes rest of input
             input.nextLine();
-
             // get a memo
             System.out.print("Enter a memo: ");
             memo = input.nextLine();
-            theUser.getAccount(fromAcct).otherTransfer(toAcctOthr, memo, amounts);
+            //theUser.getAccount(fromAcct).otherTransfer(toAcctOthr, memo, amounts);
+            otherTransferFundsHelper(theUser, fromAcct, toAcctOthr, amounts, memo);
             System.out.println("Transferred to OTHER " + toAcctOthr + " successfully!"); 
         }
         else{
@@ -260,14 +258,31 @@ public class ATM {
                 //     System.out.println("Amount must not have more than 2dp.");
                 // }
             }while(amount < 0 || amount > acctBal || (BigDecimal.valueOf(amount).scale() > 2));
-
             // takes rest of input
             input.nextLine();
-
             // get a memo
             System.out.print("Enter a memo: ");
             memo = input.nextLine();
+            //theUser.getAccount(fromAcct).transfer(theUser.getAccount(toAcct), memo, amount);
+            transferFundsHelper(theUser, fromAcct, toAcct, amount, memo);
+        }
+    }
+
+    public static void otherTransferFundsHelper(User theUser, int fromAcct, String toAcctOthr, double amounts, String memo){
+        try {
+            theUser.getAccount(fromAcct).otherTransfer(toAcctOthr, memo, amounts);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public static void transferFundsHelper(User theUser, int fromAcct, int toAcct, double amount, String memo){
+        try {
             theUser.getAccount(fromAcct).transfer(theUser.getAccount(toAcct), memo, amount);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 

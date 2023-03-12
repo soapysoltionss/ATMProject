@@ -54,14 +54,29 @@ class ATMTest {
         atm.deposiFundstHelper(testUser, fromAcct, amount);
     }
 
-//    @Test
-//    void transferFunds() {
-//        String uuid = "5044891741";
-//        String pin = "1111";
-//        int fromAcct = 0;
-//        double amount = 100;
-//        // create user object
-//        User testUser = testBank.userLogin(uuid, pin);
-//        atm.transferFundsHelper(testUser, fromAcct, amount);
-//    }
+    @Test
+    void transferFunds() {
+        String uuid = "8133389705";
+        String pin = "6969";
+        int fromAcct = 0;
+        int toAcct = 1;
+        String memo = "test";
+        double amount = 100;
+        // create user object
+        User testUser = testBank.userLogin(uuid, pin);
+        atm.transferFundsHelper(testUser, fromAcct, toAcct, amount, memo);
+    }
+
+    @Test
+    void otherTransferFunds() {
+        String uuid = "5044891741";
+        String pin = "1111";
+        int fromAcct = 0;
+        String toAcctOther = "8133389705";
+        String memo = "test";
+        double amount = 10;
+        // create user object
+        User testUser = testBank.userLogin(uuid, pin);
+        atm.otherTransferFundsHelper(testUser, fromAcct, toAcctOther, amount, memo);
+    }
 }
