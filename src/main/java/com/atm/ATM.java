@@ -116,10 +116,8 @@ public class ATM {
             //     System.out.printf("Amount to withdraw can't be 0");
             // }
         }while(amount < 0 || amount > acctBal || (BigDecimal.valueOf(amount).scale() > 2));
-
         // takes rest of input
         input.nextLine();
-
         withdrawFundsHelper(theUser, fromAcct, amount);
     }
 
@@ -161,10 +159,18 @@ public class ATM {
 
         // takes rest of input
         input.nextLine();
-        
-        theUser.getAccount(fromAcct).deposit(amount);
+//        theUser.getAccount(fromAcct).deposit(amount);
+        deposiFundstHelper(theUser, fromAcct, amount);
     }
 
+    public static void deposiFundstHelper(User theUser, int fromAcct, double amount) {
+        try {
+            theUser.getAccount(fromAcct).deposit(amount);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
     public static void transferFunds(User theUser, Scanner input) throws Exception {
         int fromAcct;
