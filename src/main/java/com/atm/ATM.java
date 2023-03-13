@@ -297,6 +297,7 @@ public class ATM {
     public static void settings(User theUser, Scanner input) throws Exception {
         int choice;
         int fromAcct;
+        int newLimit;
         fromAcct = accSelect(theUser, input, "Please select an account to change settings for:");
         do {
             System.out.println("What would you like to change?");
@@ -311,24 +312,67 @@ public class ATM {
         switch (choice) {
             case 1:
                 System.out.println("Enter new local transfer limit: ");
-                theUser.getAccount(fromAcct).changeTransferLimit("localTransferLimit", input.nextDouble());
+                newLimit = input.nextInt();
+                //theUser.getAccount(fromAcct).changeTransferLimit("localTransferLimit", input.nextDouble());
+                localTransferLimitHelper(theUser, fromAcct, newLimit);
                 break;
             case 2:
                 System.out.println("Enter new overseas transfer limit: ");
-                theUser.getAccount(fromAcct).changeTransferLimit("overseasTransferLimit", input.nextDouble());
+                newLimit = input.nextInt();
+                //theUser.getAccount(fromAcct).changeTransferLimit("overseasTransferLimit", input.nextDouble());
+                overseasTransferLimitHelper(theUser, fromAcct, newLimit);
                 break;
             case 3:
                 System.out.println("Enter new local withdraw limit: ");
-                theUser.getAccount(fromAcct).changeTransferLimit("localWithdrawLimit", input.nextDouble());
+                newLimit = input.nextInt();
+                //theUser.getAccount(fromAcct).changeTransferLimit("localWithdrawLimit", input.nextDouble());
+                localWithdrawLimitHelper(theUser, fromAcct, newLimit);
                 break;
             case 4:
                 System.out.println("Enter new overseas withdraw limit: ");
-                theUser.getAccount(fromAcct).changeTransferLimit("overseasWithdrawLimit",input.nextDouble());
+                newLimit = input.nextInt();
+                //theUser.getAccount(fromAcct).changeTransferLimit("overseasWithdrawLimit",input.nextDouble());
+                overseasWithdrawLimitHelper(theUser, fromAcct, newLimit);
                 break;
         } if (choice != 4) {
             ATM.printUserMenu(theUser, input);
         }
+    }
 
+    public static void localTransferLimitHelper(User theUser, int fromAcct, int newLimit) {
+        try {
+            theUser.getAccount(fromAcct).changeTransferLimit("localTransferLimit", newLimit);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public static void overseasTransferLimitHelper(User theUser, int fromAcct, int newLimit){
+        try {
+            theUser.getAccount(fromAcct).changeTransferLimit("overseasTransferLimit", newLimit);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public static void localWithdrawLimitHelper(User theUser, int fromAcct, int newLimit){
+        try {
+            theUser.getAccount(fromAcct).changeTransferLimit("localWithdrawLimit", newLimit);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public static void overseasWithdrawLimitHelper(User theUser, int fromAcct, int newLimit){
+        try {
+            theUser.getAccount(fromAcct).changeTransferLimit("overseasWithdrawLimit", newLimit);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public static void printUserMenu(User theUser, Scanner input) throws Exception {

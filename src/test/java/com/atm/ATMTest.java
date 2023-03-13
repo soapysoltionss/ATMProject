@@ -79,4 +79,49 @@ class ATMTest {
         User testUser = testBank.userLogin(uuid, pin);
         atm.otherTransferFundsHelper(testUser, fromAcct, toAcctOther, amount, memo);
     }
+
+    @Test
+    void testLocalTransfer() {
+        String uuid = "5044891741";
+        String pin = "1111";
+        int fromAcct = 0;
+        int newLimit = 100;
+        // create user object
+        User testUser = testBank.userLogin(uuid, pin);
+        atm.localTransferLimitHelper(testUser, fromAcct, newLimit);
+    }
+
+    @Test
+    void testLocalWithdraw() {
+        String uuid = "5044891741";
+        String pin = "1111";
+        int fromAcct = 0;
+        int newLimit = 10;
+        // create user object
+        User testUser = testBank.userLogin(uuid, pin);
+        atm.localWithdrawLimitHelper(testUser, fromAcct, newLimit);
+    }
+
+    @Test
+    void testOverseasTransfer() {
+        String uuid = "5044891741";
+        String pin = "1111";
+        int fromAcct = 0;
+        int newLimit = 10;
+        // create user object
+        User testUser = testBank.userLogin(uuid, pin);
+        atm.overseasTransferLimitHelper(testUser, fromAcct, newLimit);
+    }
+
+    @Test
+    void testOverseasWithdraw() {
+        String uuid = "5044891741";
+        String pin = "1111";
+        int fromAcct = 0;
+        int newLimit = 10;
+        // create user object
+        User testUser = testBank.userLogin(uuid, pin);
+        atm.overseasWithdrawLimitHelper(testUser, fromAcct, newLimit);
+    }
+
 }
