@@ -294,9 +294,41 @@ public class ATM {
         }
     }
 
-    public static void settings(User theUser, Scanner input) {
-        System.out.println("Settings");
-        System.out.println("    1) Change Transfer Limit");
+    public static void settings(User theUser, Scanner input) throws Exception {
+        int choice;
+        int fromAcct;
+        fromAcct = accSelect(theUser, input, "Please select an account to change settings for:");
+        do {
+            System.out.println("What would you like to change?");
+            System.out.println("    1) Change Local Transfer Limit");
+            System.out.println("    2) Change Overseas Transfer Limit");
+            System.out.println("    3) Change Local Withdraw Limit");
+            System.out.println("    4) Change Overseas Withdraw Limit");
+            System.out.println("    5) Exit");
+            System.out.print("Enter choice: ");
+            choice = input.nextInt();
+        } while (choice < 1 || choice > 4);
+        switch (choice) {
+            case 1:
+                System.out.println("Enter new local transfer limit: ");
+                theUser.getAccount(fromAcct).changeTransferLimit("localTransferLimit", input.nextDouble());
+                break;
+            case 2:
+                System.out.println("Enter new overseas transfer limit: ");
+                theUser.getAccount(fromAcct).changeTransferLimit("overseasTransferLimit", input.nextDouble());
+                break;
+            case 3:
+                System.out.println("Enter new local withdraw limit: ");
+                theUser.getAccount(fromAcct).changeTransferLimit("localWithdrawLimit", input.nextDouble());
+                break;
+            case 4:
+                System.out.println("Enter new overseas withdraw limit: ");
+                theUser.getAccount(fromAcct).changeTransferLimit("overseasWithdrawLimit",input.nextDouble());
+                break;
+        } if (choice != 4) {
+            ATM.printUserMenu(theUser, input);
+        }
+
     }
 
     public static void printUserMenu(User theUser, Scanner input) throws Exception {
@@ -313,15 +345,15 @@ public class ATM {
             System.out.println("    2) Withdrawal");
             System.out.println("    3) Deposit");
             System.out.println("    4) Transfer");
-            // System.out.println("    5) Settings");
-            System.out.println("    5) Quit");
+            System.out.println("    5) Settings");
+            System.out.println("    6) Quit");
             System.out.println();
             System.out.print("Enter choice: ");
             choice = input.nextInt();
-            if (choice < 1 || choice > 5) {
-                System.out.println("Invalid choice! Please choice 1-5");
+            if (choice < 1 || choice > 6) {
+                System.out.println("Invalid choice! Please choice 1-6");
             }
-        } while (choice < 1 || choice > 5);
+        } while (choice < 1 || choice > 6);
         switch (choice) {
             case 1:
                 ATM.showTransactionHistory(theUser, input);
@@ -336,9 +368,12 @@ public class ATM {
                 ATM.transferFunds(theUser, input);
                 break;
             case 5:
+                ATM.settings(theUser, input);
+                break;
+            case 6:
                 input.nextLine();
         }
-        if (choice != 5) {
+        if (choice != 6) {
             ATM.printUserMenu(theUser, input);
         }
     }

@@ -42,15 +42,15 @@ public class Client {
         } finally {  
             try {  
                 if (socket != null)  
-                socket.close();  
+                    socket.close();
                 if (inputStreamReader != null)  
-                inputStreamReader.close();  
+                    inputStreamReader.close();
                 if (outputStreamWriter != null)  
-                outputStreamWriter.close();  
+                    outputStreamWriter.close();
                 if (bufferedReader != null)  
-                bufferedReader.close();  
+                    bufferedReader.close();
                 if (bufferedWriter != null)  
-                bufferedWriter.close();  
+                    bufferedWriter.close();
             } catch (IOException e) {  
         e.printStackTrace();  
         }  
