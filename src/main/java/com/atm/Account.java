@@ -17,6 +17,7 @@ public class Account {
     private ArrayList<Transaction> transactions;
     private Bank bank;
     private User user;
+    private double transferLimit;
 
     public Account(String name, String holder, Bank bank, User user) {
         this.name = name;
@@ -26,6 +27,7 @@ public class Account {
         this.bank = bank;
         this.user = user;
         this.transactions = new ArrayList<>();
+        this.transferLimit = 1000;
     }
 
     public String getSummaryLine() throws Exception {
@@ -44,10 +46,19 @@ public class Account {
         this.balance = balance;
         this.transactions = transactions;
         this.bank = bank;
+        this.transferLimit = 1000;
     }
 
     public String getUUID() {
         return this.uuid;
+    }
+
+    public double getTransferLimit() {
+        return this.transferLimit;
+    }
+
+    public void setTransferLimit(double newLimit) {
+        this.transferLimit = newLimit;
     }
 
     public void setUUID(String newUUID) {
@@ -100,6 +111,19 @@ public class Account {
         }
     }
 
+    public boolean changeTransferLimit(double newLimit) {
+        try {
+            MongoCollection <Document> accountCollection = this.bank.database.getCollection("accounts");
+            Bson filter = Filters.eq("_id", this.getUUID());
+            Bson updateOperation = new Document("$set", new Document("transferLimit", newLimit));
+            accountCollection.updateOne(filter, updateOperation);
+            this.setTransferLimit(newLimit);
+            return true;
+        } catch (MongoException e) {
+            return false;
+        }
+    }
+
     
     public void printTransactionHistory() {
         System.out.printf("\nTransaction History for Account %s\n", this.uuid);
@@ -107,7 +131,6 @@ public class Account {
                 try {
                     System.out.println(this.transactions.get(t).getSummaryLine());
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }

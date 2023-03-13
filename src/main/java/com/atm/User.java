@@ -77,7 +77,8 @@ public class User {
         Document accountDocument = new Document("_id", account.getUUID())
         .append("name", name)
         .append("holderUUID", account.getHolder())
-        .append("balance", (double)0);
+        .append("balance", (double)0)
+        .append("transferLimit", account.getTransferLimit());
         accountCollection.insertOne(accountDocument);
         this.accounts.add(account);
         MongoCollection<Document> uuidsCollection = this.bank.database.getCollection("uuids");
