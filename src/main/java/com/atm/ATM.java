@@ -15,6 +15,14 @@ public class ATM {
         Bank theBank = new Bank("Bank of Kek");
         System.out.println("Testing: Current users = " + theBank.countUsers());
         User curUser;
+        // transfer/withdrawal limit testing code...please ignore
+        // User currentUser = theBank.userLogin("8133389705", "6969");
+        // Account currentAcc = currentUser.getAccount(0);
+        // currentAcc.changeTransferLimit("localTransferLimit", 999);
+        // currentAcc.changeTransferLimit("overseasTransferLimit", 8888);
+        // currentAcc.changeTransferLimit("localWithdrawLimit", 1);
+        // currentAcc.changeTransferLimit("overseasWithdrawLimit", 6);
+
         try {
             while (true) {
                 curUser = ATM.mainMenuPrompt(theBank, input);

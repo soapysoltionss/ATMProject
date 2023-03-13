@@ -17,7 +17,7 @@ public class Account {
     private ArrayList<Transaction> transactions;
     private Bank bank;
     private User user;
-    private double transferLimit;
+    private double localTransferLimit, overseasTransferLimit, localWithdrawLimit, overseasWithdrawLimit;
 
     public Account(String name, String holder, Bank bank, User user) {
         this.name = name;
@@ -27,7 +27,10 @@ public class Account {
         this.bank = bank;
         this.user = user;
         this.transactions = new ArrayList<>();
-        this.transferLimit = 1000;
+        this.localTransferLimit = 1000;
+        this.overseasTransferLimit = 1000;
+        this.localWithdrawLimit = 1000;
+        this.overseasWithdrawLimit = 1000;
     }
 
     public String getSummaryLine() throws Exception {
@@ -46,19 +49,46 @@ public class Account {
         this.balance = balance;
         this.transactions = transactions;
         this.bank = bank;
-        this.transferLimit = 1000;
+        this.localTransferLimit = 1000;
+        this.overseasTransferLimit = 1000;
+        this.localWithdrawLimit = 1000;
+        this.overseasWithdrawLimit = 1000;
     }
 
     public String getUUID() {
         return this.uuid;
     }
 
-    public double getTransferLimit() {
-        return this.transferLimit;
+    public double getLocalTransferLimit() {
+        return this.localTransferLimit;
     }
 
-    public void setTransferLimit(double newLimit) {
-        this.transferLimit = newLimit;
+    public double getOverseasTransferLimit() {
+        return this.overseasTransferLimit;
+    }
+
+    public double getLocalWithdrawLimit() {
+        return this.localWithdrawLimit;
+    }
+
+    public double getOverseasWithdrawLimit() {
+        return this.overseasWithdrawLimit;
+    }
+
+    public void setLocalTransferLimit(double newLimit) {
+        this.localTransferLimit = newLimit;
+    }
+
+    public void setOverseasTransferLimit(double newLimit) {
+        this.overseasTransferLimit = newLimit;
+    }
+
+    public void setLocalWithdrawLimit(double newLimit) {
+        this.localWithdrawLimit= newLimit;
+    }
+
+    public void setOverseasWithdrawLimit(double newLimit) {
+        this.overseasWithdrawLimit = newLimit;
     }
 
     public void setUUID(String newUUID) {
@@ -111,13 +141,23 @@ public class Account {
         }
     }
 
-    public boolean changeTransferLimit(double newLimit) {
+    public boolean changeTransferLimit(String type, double newLimit) {
         try {
+            if (type == "localTransferLimit") {
+                this.setLocalTransferLimit(newLimit);
+            } else if (type == "overseasTransferLimit") {
+                this.setOverseasTransferLimit(newLimit);
+            } else if (type == "localWithdrawLimit") {
+                this.setLocalWithdrawLimit(newLimit);
+            } else if (type == "overseasWithdrawLimit") {
+                this.setOverseasWithdrawLimit(newLimit);
+            } else {
+                return false;
+            }
             MongoCollection <Document> accountCollection = this.bank.database.getCollection("accounts");
             Bson filter = Filters.eq("_id", this.getUUID());
-            Bson updateOperation = new Document("$set", new Document("transferLimit", newLimit));
+            Bson updateOperation = new Document("$set", new Document(type, newLimit));
             accountCollection.updateOne(filter, updateOperation);
-            this.setTransferLimit(newLimit);
             return true;
         } catch (MongoException e) {
             return false;

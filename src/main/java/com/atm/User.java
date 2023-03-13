@@ -78,7 +78,10 @@ public class User {
         .append("name", name)
         .append("holderUUID", account.getHolder())
         .append("balance", (double)0)
-        .append("transferLimit", account.getTransferLimit());
+        .append("localTransferLimit", account.getLocalTransferLimit())
+        .append("overseasTransferLimit", account.getOverseasTransferLimit())
+        .append("localWithdrawLimit", account.getLocalWithdrawLimit())
+        .append("overseasWithdrawLimit", account.getOverseasWithdrawLimit());
         accountCollection.insertOne(accountDocument);
         this.accounts.add(account);
         MongoCollection<Document> uuidsCollection = this.bank.database.getCollection("uuids");
