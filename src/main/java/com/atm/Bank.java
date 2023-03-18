@@ -167,6 +167,10 @@ public class Bank {
                 String accountUUID = accountDoc.get("_id").toString();
                 double accountBalance = accountDoc.getDouble("balance");
                 String accountName = accountDoc.getString("name");
+                double localTransferLimit = accountDoc.getDouble("localTransferLimit");
+                double overseasTransferLimit = accountDoc.getDouble("overseasTransferLimit");
+                double localWithdrawLimit = accountDoc.getDouble("localWithdrawLimit");
+                double overseasWithdrawLimit = accountDoc.getDouble("overseasWithdrawLimit");
                 ArrayList<Transaction> transactions = new ArrayList<Transaction>();
                 for (Document transactionDoc : transactionsCollection.find(Filters.eq("holder", accountUUID))) {
                     double transactionAmount = transactionDoc.getDouble("amount");
@@ -177,6 +181,10 @@ public class Bank {
                     transactions.add(transaction);
                 }
                 Account account = new Account(accountName, UserUuid, accountUUID, transactions, this, accountBalance);
+                account.setLocalTransferLimit(localTransferLimit);
+                account.setLocalWithdrawLimit(localWithdrawLimit);
+                account.setOverseasTransferLimit(overseasTransferLimit);
+                account.setOverseasWithdrawLimit(overseasWithdrawLimit);
                 //System.out.println(account.getName());
                 accounts.add(account);
             }

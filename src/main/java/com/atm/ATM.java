@@ -16,8 +16,9 @@ public class ATM {
         System.out.println("Testing: Current users = " + theBank.countUsers());
         User curUser;
         // transfer/withdrawal limit testing code...please ignore
-        // User currentUser = theBank.userLogin("8133389705", "6969");
-        // Account currentAcc = currentUser.getAccount(0);
+        //User currentUser = theBank.userLogin("8133389705", "6969");
+        //Account currentAcc = currentUser.getAccount(0);
+        //System.out.println(currentAcc.getOverseasTransferLimit());
         // currentAcc.changeTransferLimit("localTransferLimit", 999);
         // currentAcc.changeTransferLimit("overseasTransferLimit", 8888);
         // currentAcc.changeTransferLimit("localWithdrawLimit", 1);
