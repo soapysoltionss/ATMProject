@@ -314,7 +314,7 @@ public class ATM {
         switch (choice) {
             case 1:
                 oldLimit = theUser.getAccount(fromAcct).getLocalTransferLimit();
-                System.out.println("The current limi is: $" + oldLimit);
+                System.out.println("The current limit is: $" + oldLimit);
                 System.out.println("Enter new local transfer limit: ");    
                 newLimit = input.nextInt();
                 //theUser.getAccount(fromAcct).changeTransferLimit("localTransferLimit", input.nextDouble());
@@ -322,7 +322,7 @@ public class ATM {
                 break;
             case 2:
                 oldLimit = theUser.getAccount(fromAcct).getOverseasTransferLimit();
-                System.out.println("The current limi is: $" + oldLimit);
+                System.out.println("The current limit is: $" + oldLimit);
                 System.out.println("Enter new overseas transfer limit: ");
                 newLimit = input.nextInt();
                 //theUser.getAccount(fromAcct).changeTransferLimit("overseasTransferLimit", input.nextDouble());
@@ -330,7 +330,7 @@ public class ATM {
                 break;
             case 3:
                 oldLimit = theUser.getAccount(fromAcct).getLocalWithdrawLimit();
-                System.out.println("The current limi is: $" + oldLimit);
+                System.out.println("The current limit is: $" + oldLimit);
                 System.out.println("Enter new local withdraw limit: ");
                 newLimit = input.nextInt();
                 //theUser.getAccount(fromAcct).changeTransferLimit("localWithdrawLimit", input.nextDouble());
@@ -338,7 +338,7 @@ public class ATM {
                 break;
             case 4:
                 oldLimit = theUser.getAccount(fromAcct).getOverseasWithdrawLimit();
-                System.out.println("The current limi is: $" + oldLimit);
+                System.out.println("The current limit is: $" + oldLimit);
                 System.out.println("Enter new overseas withdraw limit: ");
                 newLimit = input.nextInt();
                 //theUser.getAccount(fromAcct).changeTransferLimit("overseasWithdrawLimit",input.nextDouble());

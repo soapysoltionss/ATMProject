@@ -175,7 +175,6 @@ public class Account {
                 }
             }
             System.out.println();
-    
     }
 
     public boolean modifyBalance(double balance) {
