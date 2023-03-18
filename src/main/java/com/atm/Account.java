@@ -111,12 +111,12 @@ public class Account {
         this.balance = balance;
     }
 
-    public void deposit(double amount) {
+    public void deposit(double amount) throws InvalidAmountException {
         try {
             if (amount <= 0) {
-                throw new Exception("Amount must be greater than 0");
+                throw new InvalidAmountException(amount);
             }
-        } catch (Exception e) {
+        } catch (InvalidAmountException e) {
             System.out.println("Error: Amount is negative" + e);
         }
         balance += amount;
@@ -190,12 +190,12 @@ public class Account {
         }
     }
 
-    public boolean withdraw(double amount) throws Exception{
+    public boolean withdraw(double amount) throws InvalidWithdrawAmountException{
         try {
             if (balance < amount) {
-                throw new Exception("Amount must be less than or equal to balance");
+                throw new InvalidWithdrawAmountException(amount, balance);
             } else if (amount <= 0) {
-                throw new Exception("Amount must be greater than 0");
+                throw new InvalidWithdrawAmountException(amount, balance);
             }
         } catch (Exception e) {
             System.out.println("Error: Amount is negative" + e);

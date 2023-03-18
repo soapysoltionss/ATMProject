@@ -9,7 +9,7 @@ public class InvalidAmountException extends Exception {
     }
 
     public void errorMessage() {
-        if (this.amount <= 0) {
+        if (this.amount <= 0 || this.amount == -0) {
             System.out.println("Amount must be greater than zero.");
         } else if ((BigDecimal.valueOf(this.amount).scale() > 2)) {
             System.out.println("Amount must not have more than 2dp.");

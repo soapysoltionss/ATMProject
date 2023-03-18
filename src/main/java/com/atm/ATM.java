@@ -29,7 +29,7 @@ public class ATM {
                 ATM.printUserMenu(curUser, input);
             }
         } catch (NoSuchElementException e) {
-            System.out.println("Exiting...");
+            System.out.println("Exiting, closing all connections to server...\n");
             System.exit(0);
         }
 
@@ -108,7 +108,7 @@ public class ATM {
             System.out.printf("Enter the amount to withdraw (max $%.02f): $", acctBal);
             amount = input.nextDouble();
             try {
-                if (amount < 0 || amount > acctBal || (BigDecimal.valueOf(amount).scale() > 2)) {
+                if (amount < 0 || amount > acctBal || (BigDecimal.valueOf(amount).scale() > 2 || amount == -0)) {
                     throw new InvalidWithdrawAmountException(amount, acctBal);
                 }
             } catch (InvalidWithdrawAmountException e) {
@@ -150,7 +150,7 @@ public class ATM {
             System.out.printf("Enter the amount to deposit: $");
             amount = input.nextDouble();
             try {
-                if (amount < 0 || (BigDecimal.valueOf(amount).scale() > 2)) {
+                if (amount <= 0 || (BigDecimal.valueOf(amount).scale() > 2)) {
                     throw new InvalidAmountException(amount);
                 }
             } catch (InvalidAmountException e) {
@@ -298,6 +298,7 @@ public class ATM {
         int choice;
         int fromAcct;
         int newLimit;
+        double oldLimit;
         fromAcct = accSelect(theUser, input, "Please select an account to change settings for:");
         do {
             System.out.println("What would you like to change?");
@@ -311,24 +312,32 @@ public class ATM {
         } while (choice < 1 || choice > 4);
         switch (choice) {
             case 1:
-                System.out.println("Enter new local transfer limit: ");
+                oldLimit = theUser.getAccount(fromAcct).getLocalTransferLimit();
+                System.out.println("The current limi is: $" + oldLimit);
+                System.out.println("Enter new local transfer limit: ");    
                 newLimit = input.nextInt();
                 //theUser.getAccount(fromAcct).changeTransferLimit("localTransferLimit", input.nextDouble());
                 localTransferLimitHelper(theUser, fromAcct, newLimit);
                 break;
             case 2:
+                oldLimit = theUser.getAccount(fromAcct).getOverseasTransferLimit();
+                System.out.println("The current limi is: $" + oldLimit);
                 System.out.println("Enter new overseas transfer limit: ");
                 newLimit = input.nextInt();
                 //theUser.getAccount(fromAcct).changeTransferLimit("overseasTransferLimit", input.nextDouble());
                 overseasTransferLimitHelper(theUser, fromAcct, newLimit);
                 break;
             case 3:
+                oldLimit = theUser.getAccount(fromAcct).getLocalWithdrawLimit();
+                System.out.println("The current limi is: $" + oldLimit);
                 System.out.println("Enter new local withdraw limit: ");
                 newLimit = input.nextInt();
                 //theUser.getAccount(fromAcct).changeTransferLimit("localWithdrawLimit", input.nextDouble());
                 localWithdrawLimitHelper(theUser, fromAcct, newLimit);
                 break;
             case 4:
+                oldLimit = theUser.getAccount(fromAcct).getOverseasWithdrawLimit();
+                System.out.println("The current limi is: $" + oldLimit);
                 System.out.println("Enter new overseas withdraw limit: ");
                 newLimit = input.nextInt();
                 //theUser.getAccount(fromAcct).changeTransferLimit("overseasWithdrawLimit",input.nextDouble());
