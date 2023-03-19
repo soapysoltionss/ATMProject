@@ -38,9 +38,9 @@ public class Account {
     public String getSummaryLine() throws Exception {
         double balance = this.getBalance();
         if (balance >= 0) {
-            return String.format("%s : %s%.02f %s : %s", this.uuid, this.currency.getSymbolBefore(),this.currency.convert(balance), this.currency.getSymbolAfter(),this.name);
+            return String.format("%s : %s %.02f %s : %s", this.uuid, this.currency.getSymbolBefore(),this.currency.convert(balance), this.currency.getSymbolAfter(),this.name);
         } else {
-            return String.format("%s : %s%.02f %s : %s", this.uuid,this.currency.getSymbolBefore(), this.currency.convert(balance),this.currency.getSymbolAfter() ,this.name);
+            return String.format("%s : %s %.02f %s : %s", this.uuid,this.currency.getSymbolBefore(), this.currency.convert(balance),this.currency.getSymbolAfter() ,this.name);
         }
     }
 
