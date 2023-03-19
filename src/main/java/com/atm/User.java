@@ -8,6 +8,10 @@ import org.bson.Document;
 
 import com.mongodb.client.MongoCollection;
 
+import org.bson.conversions.Bson;
+import com.mongodb.MongoException;
+import com.mongodb.client.model.Filters;
+
 public class User {
     private String uuid;
     private String firstName;

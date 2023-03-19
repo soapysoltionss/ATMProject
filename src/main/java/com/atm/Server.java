@@ -6,12 +6,12 @@ import java.net.Socket;
 
 public class Server {  
     public static void main(String[] args) throws IOException {   
-        Socket socket ;  
-        InputStreamReader inputStreamReader ;  
-        OutputStreamWriter outputStreamWriter ;  
-        BufferedReader bufferedReader ;  
-        BufferedWriter bufferedWriter ;  
-        ServerSocket serversocket ;  
+        Socket socket;  
+        InputStreamReader inputStreamReader;  
+        OutputStreamWriter outputStreamWriter;  
+        BufferedReader bufferedReader;  
+        BufferedWriter bufferedWriter;  
+        ServerSocket serversocket;  
     
         serversocket = new ServerSocket(5050);  
     

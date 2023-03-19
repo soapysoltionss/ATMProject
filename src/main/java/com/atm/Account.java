@@ -175,7 +175,6 @@ public class Account {
         }
     }
 
-    
     public void printTransactionHistory() {
         System.out.printf("\nTransaction History for Account %s\n", this.uuid);
             for (int t = this.transactions.size()-1; t>0;t--) {
@@ -194,6 +193,18 @@ public class Account {
             Bson filter = Filters.eq("_id", this.getUUID());
             Bson updateOperation = new Document("$set", new Document("balance", balance));
             accountCollection.updateOne(filter, updateOperation);
+            return true;
+        } catch (MongoException e) {
+            return false;
+        }
+    }
+
+    public boolean setCountry(String country) {
+        try {
+            MongoCollection<Document> userCollection = this.bank.database.getCollection("users");
+            Bson filter = Filters.eq("_id", this.getHolder());
+            Bson updateOperation = new Document("$set", new Document("country", country));
+            userCollection.updateOne(filter, updateOperation);
             return true;
         } catch (MongoException e) {
             return false;

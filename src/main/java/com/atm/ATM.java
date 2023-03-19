@@ -14,7 +14,6 @@ public class ATM {
     public void displayATMMenu() throws Exception {
         Scanner input = new Scanner(System.in);
         Bank theBank = new Bank("Bank of Kek");
-        System.out.println("Testing: Current users = " + theBank.countUsers());
         User curUser;
         // transfer/withdrawal limit testing code...please ignore
         //User currentUser = theBank.userLogin("8133389705", "6969");
@@ -91,6 +90,7 @@ public class ATM {
         } while (acc < 0 || acc >= theUser.numOfAccounts());
         return acc;
     }
+
     public static void showTransactionHistory(User theUser, Scanner input) {
         int theAccount;
         theAccount = accSelect(theUser, input, "whose transaction you want to see: ");
@@ -309,10 +309,11 @@ public class ATM {
             System.out.println("    2) Change Overseas Transfer Limit");
             System.out.println("    3) Change Local Withdraw Limit");
             System.out.println("    4) Change Overseas Withdraw Limit");
-            System.out.println("    5) Exit");
+            System.out.println("    5) Change currency");
+            System.out.println("    6) Exit");
             System.out.print("Enter choice: ");
             choice = input.nextInt();
-        } while (choice < 1 || choice > 4);
+        } while (choice < 1 || choice > 6);
         switch (choice) {
             case 1:
                 oldLimit = theUser.getAccount(fromAcct).getLocalTransferLimit();
@@ -346,8 +347,47 @@ public class ATM {
                 //theUser.getAccount(fromAcct).changeTransferLimit("overseasWithdrawLimit",input.nextDouble());
                 overseasWithdrawLimitHelper(theUser, fromAcct, theUser.getAccount(fromAcct).getCurrency().unconvert(newLimit));
                 break;
-        } if (choice != 4) {
+            case 5:
+                Bank bank = new Bank("The Bank of kek");
+                for(int i = 0; i < bank.getCurrencies().size(); i++) {
+                    System.out.println(i + ") " + bank.getCurrencies().get(i).getSymbolAfter() + " - " + bank.getCurrencies().get(i).getSymbolBefore() + " " + bank.getCurrencies().get(i).getExchangeRate());
+                }
+                System.out.println("The current currency is: " + theUser.getAccount(fromAcct).getCurrency().getSymbolAfter());
+                System.out.print("Enter the currency you want to convert to: ");
+                int selectCurrency = input.nextInt();
+                // bank.getCurrencies().size().get(selectCurrency);
+                for (int i = 0; i < bank.getCurrencies().size(); i++) {
+                    String symbol;
+                    String country;
+                    Double exchangeRate;
+                    String countryAbbrev;
+                    if (selectCurrency == i) {
+                        selectCurrency = i;
+                        country = bank.getCurrencies().get(selectCurrency).getCountry();
+                        countryAbbrev = bank.getCurrencies().get(selectCurrency).getSymbolAfter();
+                        symbol = bank.getCurrencies().get(selectCurrency).getSymbolBefore();
+                        exchangeRate = bank.getCurrencies().get(selectCurrency).getExchangeRate();
+                        changeCurrencyHelper(theUser, fromAcct, country, countryAbbrev, symbol, exchangeRate);
+                    }
+                }
+                break;
+            case 6:
+                ATM.printUserMenu(theUser, input);
+                break;
+        } if (choice != 6) {
             ATM.printUserMenu(theUser, input);
+        }
+    }
+
+    public static void changeCurrencyHelper(User theUser,int fromAcct, String country, String countryAbbrev, String symbol, double exchangeRate) {
+        String currentCountryAbbrev = theUser.getAccount(fromAcct).getCurrency().getSymbolAfter();
+        String acctHolder = theUser.getAccount(fromAcct).getHolder();
+        try {
+            System.out.println("Converting from " + currentCountryAbbrev + " to " + countryAbbrev + " for account " + acctHolder + "...");
+            theUser.getAccount(fromAcct).setCountry(country);
+            System.out.println("Updating user's country...");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
