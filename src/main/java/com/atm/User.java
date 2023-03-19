@@ -16,7 +16,7 @@ public class User {
     private ArrayList<Account> accounts;
     private Bank bank;
     private String country;
-    
+
     public User(String firstName, String lastName, String pinHash, Bank bank, String country) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -32,6 +32,7 @@ public class User {
         byte[] pinBytes = String.valueOf(pin).getBytes();
         return toHex(md.digest(pinBytes));
     }
+
 
     public void setUUID(String newUUID) {
         this.uuid = newUUID;

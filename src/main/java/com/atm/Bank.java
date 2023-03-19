@@ -24,12 +24,13 @@ public class Bank {
     private String name;
     private ArrayList<User> users;
     private ArrayList<Account> accounts;
-    //private ArrayList<Account> accounts;
+    private ArrayList<Currency> currencies;
     MongoDatabase database;
     private MongoClient mongoClient;
     private MongoCollection<Document> usersCollection;
     private MongoCollection<Document> accountsCollection;
     private MongoCollection<Document> transactionsCollection;
+    private MongoCollection<Document> currencyCollection;
 
     public Bank(String name) {
         this.name = name;
@@ -44,8 +45,11 @@ public class Bank {
         this.usersCollection = database.getCollection("users");
         this.accountsCollection = database.getCollection("accounts");
         this.transactionsCollection = database.getCollection("transactions");
+        this.currencyCollection = database.getCollection("currency");
+        this.currencies = this.getCurrencies();
         this.users = this.getUsers();
         this.accounts = new ArrayList<>();
+        
 
     }
 
@@ -136,7 +140,7 @@ public class Bank {
     public User addUser(String firstName, String lastName, String pin, String country) throws NoSuchAlgorithmException {
         User newUser = new User(firstName, lastName, User.hashPin(pin), this, country);
         this.users.add(newUser);
-    
+        
         MongoCollection<Document> usersCollection = this.database.getCollection("users");
         Document userDocument = new Document("_id", newUser.getUUID())
         .append("firstName", newUser.getFirstName())
@@ -150,8 +154,22 @@ public class Bank {
         return newUser;
     }
 
+    public ArrayList<Currency> getCurrencies() {
+        ArrayList<Currency> currencyList = new ArrayList<>();
+        for (Document currencyDoc : currencyCollection.find()) {
+            String country = currencyDoc.getString("country");
+            String symbolAfter = currencyDoc.getString("symbolAfter");
+            String symbolBefore = currencyDoc.getString("symbolBefore");
+            double exchangeRate = currencyDoc.getDouble("exchangeRate");
+            Currency newCurrency = new Currency(country, symbolAfter, symbolBefore, exchangeRate);
+            currencyList.add(newCurrency);
+        }
+        return currencyList;
+    }
+
     public ArrayList<User> getUsers() {
         ArrayList<User> userList = new ArrayList<>();
+        this.currencies = getCurrencies();
         for (Document doc : usersCollection.find()) {
             String UserUuid = doc.get("_id").toString();
             //System.out.println(uuid);
@@ -181,6 +199,11 @@ public class Bank {
                     transactions.add(transaction);
                 }
                 Account account = new Account(accountName, UserUuid, accountUUID, transactions, this, accountBalance);
+                for (Currency currency: currencies) {
+                    if (country.equalsIgnoreCase(currency.getCountry())) {
+                        account.setCurrency(currency);
+                    }
+                }
                 account.setLocalTransferLimit(localTransferLimit);
                 account.setLocalWithdrawLimit(localWithdrawLimit);
                 account.setOverseasTransferLimit(overseasTransferLimit);

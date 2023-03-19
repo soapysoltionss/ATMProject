@@ -18,6 +18,7 @@ public class Account {
     private Bank bank;
     private User user;
     private double localTransferLimit, overseasTransferLimit, localWithdrawLimit, overseasWithdrawLimit;
+    private Currency currency;
 
     public Account(String name, String holder, Bank bank, User user) {
         this.name = name;
@@ -31,14 +32,15 @@ public class Account {
         this.overseasTransferLimit = 1000;
         this.localWithdrawLimit = 1000;
         this.overseasWithdrawLimit = 1000;
+        this.currency = null;
     }
 
     public String getSummaryLine() throws Exception {
         double balance = this.getBalance();
         if (balance >= 0) {
-            return String.format("%s : $%.02f : %s", this.uuid, balance, this.name);
+            return String.format("%s : %s%.02f %s : %s", this.uuid, this.currency.getSymbolBefore(),this.currency.convert(balance), this.currency.getSymbolAfter(),this.name);
         } else {
-            return String.format("%s : $%.02f : %s", this.uuid, balance, this.name);
+            return String.format("%s : %s%.02f %s : %s", this.uuid,this.currency.getSymbolBefore(), this.currency.convert(balance),this.currency.getSymbolAfter() ,this.name);
         }
     }
 
@@ -53,7 +55,16 @@ public class Account {
         this.overseasTransferLimit = 1000;
         this.localWithdrawLimit = 1000;
         this.overseasWithdrawLimit = 1000;
+
     }
+
+    public Currency getCurrency() {
+        return this.currency;
+    }
+
+    public void setCurrency(Currency c) {
+        this.currency = c;
+    } 
 
     public String getUUID() {
         return this.uuid;
